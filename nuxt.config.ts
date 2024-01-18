@@ -7,5 +7,5 @@ export default defineNuxtConfig({
       apiKey: process.env.NUXT_API_KEY,
     },
   },
-  modules: ["@nuxt/ui", "@nuxt/content"],
+  modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxt/content"],
 });

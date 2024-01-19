@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    <UIcon v-show="colorMode.preference === 'light'" class="icon-item" name="i-heroicons-moon"  @click="changeTheme('dark')"/>
+    <UIcon v-show="colorMode.preference !== 'dark'" class="icon-item" name="i-heroicons-moon"  @click="changeTheme('dark')"/>
     <UIcon v-show="colorMode.preference === 'dark'" class="icon-item" name="i-heroicons-sun"   @click="changeTheme('light')"/>
   </div>
 </template>

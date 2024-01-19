@@ -4,7 +4,7 @@
       :loading="isLoading"
       :disabled="isLoading"
       icon="i-heroicons-magnifying-glass-20-solid"
-      placeholder="Searching..."
+      placeholder="Input your question..."
       v-model="question"
       @keyup.enter="submit"
     />
@@ -44,6 +44,13 @@ const submit = async () => {
   isLoading.value = false;
   console.log("result");
   question.value = "";
+  let list = document.querySelector('.conversation-list');
+  let lestChild = document.querySelectorAll('.conversation-item')[document.querySelectorAll('.conversation-item').length -1]
+  console.log(list.scrollHeight);
+  if(list.scrollHeight > lestChild.clientHeight) {
+    list.scrollTop = list.scrollHeight - lestChild.clientHeight -30;
+  }
+  
 };
 </script>
 

@@ -7,9 +7,9 @@
       </template>
       <div v-html="item.answer"></div>
     </UCard>
+    <conversation-empty v-if="conversationList.length === 0"></conversation-empty>
   </div>
 </template>
-
 <script setup>
 const conversation = useConversationStore();
 const { conversationList } = storeToRefs(conversation);
@@ -17,6 +17,8 @@ const { conversationList } = storeToRefs(conversation);
 
 <style lang="less" scoped>
 .conversation-list {
+  height: 100%;
+  overflow: scroll;
   .conversation-item {
     margin: 20px;
   }

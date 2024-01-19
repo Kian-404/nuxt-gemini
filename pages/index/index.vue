@@ -1,9 +1,9 @@
 <template>
-  <div class="layout">
+  <div class="index">
     <div class="content">
       <ConversationList />
     </div>
-    <div class="input">
+    <div class="input-area">
       <QuestionBar />
     </div>
   </div>
@@ -14,15 +14,18 @@ import ConversationList from "../../components/conversationList.vue";
 </script>
 
 <style less scoped>
-.layout{
-  height: 100vh;
+.index{
+  height: 100%;
   margin: 0 20px;
-  .content{
-    height: 90vh;
-    overflow: scroll;
-  }
-  .input{
+  .header{
     height: 10vh;
+  }
+  .content{
+    height: 90%;
+    /* overflow: scroll; */
+  }
+  .input-area{
+    height: 10%;
     display: flex;
     justify-content: center;
     align-items: center;

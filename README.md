@@ -1,6 +1,11 @@
-# Nuxt 3 Minimal Starter
+# Nuxt Gemini
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+Web application built with vue nuxt and Google gemini
+
+------
+Check out our [website](https://nuxt-gemini.vercel.app) here!
+
+
 
 ## Setup
 

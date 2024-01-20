@@ -1,18 +1,21 @@
 <template>
   <div class="conversation-list">
-    <UCard class="conversation-item" v-for="item in conversationList">
-      <template #header>
-        <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Avatar" />
-        {{ item.question }}
-      </template>
-      <div v-html="item.answer"></div>
-    </UCard>
+    <div v-for="(item, index) in conversationList">
+      <ConversationItem :key="item.id" :item="item" :index="index"></ConversationItem>
+    </div>
     <conversation-empty v-if="conversationList.length === 0"></conversation-empty>
   </div>
 </template>
 <script setup>
 const conversation = useConversationStore();
 const { conversationList } = storeToRefs(conversation);
+const btnLoading = ref(false);
+const resetAnswer = async (resetItem) => {
+  console.log(resetItem);
+  btnLoading.value = true;
+  await conversation.restartConversation(resetItem.question);
+  btnLoading.value = false;
+};
 </script>
 
 <style lang="less" scoped>

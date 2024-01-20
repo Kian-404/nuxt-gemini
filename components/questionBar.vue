@@ -19,7 +19,7 @@ const question = ref("");
 const submit = async () => {
   isLoading.value = true;
 
-  await conversation.getConversation(question.value);
+  await conversation.addConversation(question.value);
   isLoading.value = false;
   console.log("result");
   question.value = "";

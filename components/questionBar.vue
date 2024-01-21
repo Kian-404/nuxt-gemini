@@ -7,6 +7,7 @@
       placeholder="Input your question..."
       v-model="question"
       @keyup.enter="submit"
+      style="height: 48px;"
     />
   </div>
 </template>

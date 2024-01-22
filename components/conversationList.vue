@@ -21,7 +21,7 @@ const resetAnswer = async (resetItem) => {
 <style lang="less" scoped>
 .conversation-list {
   height: 100%;
-  overflow: scroll;
+  overflow-y: scroll;
   .conversation-item {
     margin: 20px;
   }

@@ -3,10 +3,11 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 
 interface conversationItem {
   id: number;
-  code: number;
   question: string;
   answer: string | Promise<string>;
   time: Date;
+  isAnswerLoading?: boolean;
+  code?: number;
 }
 
 export const useConversationStore = defineStore("ConversationStore", () => {
@@ -16,9 +17,33 @@ export const useConversationStore = defineStore("ConversationStore", () => {
   const conversationList: conversationItem[] = reactive([]);
 
   async function addConversation(question: string) {
+    const conversationItem: conversationItem = {
+      id: Math.random(),
+      time: new Date(),
+      question: question,
+      answer: "answer",
+      isAnswerLoading: true,
+    };
+    conversationList.push(conversationItem);
+
+    nextTick(() => {
+      let list = document.querySelector(".conversation-list");
+      let lestChild =
+        document.querySelectorAll(".conversation-item")[document.querySelectorAll(".conversation-item").length - 1];
+      console.log(list?.scrollHeight);
+      if (list && list.scrollHeight > lestChild.clientHeight) {
+        list.scrollTop = list?.scrollHeight - lestChild.clientHeight - 30;
+      }
+    });
+
     const conversation = await getConversation(question);
-    console.log(conversation);
-    conversationList.push(conversation);
+    conversationItem.answer = conversation.answer;
+    conversationItem.isAnswerLoading = false;
+    conversationItem.code = conversation.code;
+    // conversationList[conversationList.length - 1] = reactive(conversationItem);
+    console.log(conversationList);
+    conversationList.pop();
+    conversationList.push(conversationItem);
   }
   async function regenerateConversation(question: string, index: number) {
     const conversation = await getConversation(question);

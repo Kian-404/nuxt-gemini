@@ -24,12 +24,6 @@ const submit = async () => {
   isLoading.value = false;
   console.log("result");
   question.value = "";
-  let list = document.querySelector('.conversation-list');
-  let lestChild = document.querySelectorAll('.conversation-item')[document.querySelectorAll('.conversation-item').length -1]
-  console.log(list.scrollHeight);
-  if(list.scrollHeight > lestChild.clientHeight) {
-    list.scrollTop = list.scrollHeight - lestChild.clientHeight -30;
-  }
   
 };
 </script>

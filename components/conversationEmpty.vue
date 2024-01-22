@@ -57,6 +57,11 @@ useHead({
     font-size: 36px;
     display: flex;
     flex-wrap: wrap;
+    .desc {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
   }
 }
 </style>

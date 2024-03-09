@@ -1,10 +1,17 @@
 <template>
   <UCard class="conversation-item">
     <template #header>
-      <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Avatar" />
-      {{ conversationItem.question }}
+      <div class="question-details">
+        <div class="question-author">
+         <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Avatar" />
+        </div>
+        <div class="question-text"> 
+          {{ conversationItem.question }}
+        </div>
+      </div>
     </template>
     <div>{{ conversation.code }}</div>
+    <!-- <div  v-html="conversationItem.answer"></div> -->
     <div v-show="!conversationItem.isAnswerLoading" v-html="conversationItem.answer"></div>
     <div v-show="conversationItem.isAnswerLoading" class="flex items-center space-x-4">
       <USkeleton class="h-12 w-12" :ui="{ rounded: 'rounded-full' }" />
@@ -41,6 +48,13 @@ const RegenerateAnswer = async (resetItem) => {
   .conversation-item {
     margin: 20px;
     word-wrap: break-word;
+    .question-details{
+      display: flex;
+      align-items: center;
+      .question-author {
+        margin-right: 20px;
+      }
+    }
     .restart {
       text-align: center;
     }

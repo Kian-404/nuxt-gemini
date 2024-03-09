@@ -17,15 +17,20 @@ export const useConversationStore = defineStore("ConversationStore", () => {
   const conversationList: conversationItem[] = reactive([]);
 
   async function addConversation(question: string) {
-    const conversationItem: conversationItem = {
+    const conversationItem: conversationItem = reactive({
       id: Math.random(),
       time: new Date(),
       question: question,
-      answer: "answer",
+      answer: "",
       isAnswerLoading: true,
-    };
+    });
     conversationList.push(conversationItem);
 
+    const conversation = await getConversation(question);
+    conversationItem.answer = conversation.answer;
+    conversationItem.isAnswerLoading = false;
+    conversationItem.code = conversation.code;
+    console.log(conversationList);
     nextTick(() => {
       let list = document.querySelector(".conversation-list");
       let lestChild =
@@ -35,15 +40,6 @@ export const useConversationStore = defineStore("ConversationStore", () => {
         list.scrollTop = list?.scrollHeight - lestChild.clientHeight - 30;
       }
     });
-
-    const conversation = await getConversation(question);
-    conversationItem.answer = conversation.answer;
-    conversationItem.isAnswerLoading = false;
-    conversationItem.code = conversation.code;
-    // conversationList[conversationList.length - 1] = reactive(conversationItem);
-    console.log(conversationList);
-    conversationList.pop();
-    conversationList.push(conversationItem);
   }
   async function regenerateConversation(question: string, index: number) {
     const conversation = await getConversation(question);

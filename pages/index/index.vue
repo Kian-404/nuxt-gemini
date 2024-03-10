@@ -16,7 +16,7 @@ import ConversationList from "../../components/conversationList.vue";
 <style less scoped>
 .index{
   height: 100%;
-  margin: 0 20px;
+  /* margin: 0 20px; */
   .header{
     height: 10vh;
   }

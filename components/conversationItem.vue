@@ -3,16 +3,20 @@
     <template #header>
       <div class="question-details">
         <div class="question-author">
-         <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Avatar" />
+          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Avatar" />
         </div>
-        <div class="question-text"> 
+        <div class="question-text">
           {{ conversationItem.question }}
         </div>
       </div>
     </template>
     <div>{{ conversation.code }}</div>
-    <!-- <div  v-html="conversationItem.answer"></div> -->
-    <div v-show="!conversationItem.isAnswerLoading" v-html="conversationItem.answer"></div>
+    <div class="gemini">
+      <div class="gemini-pic" v-show="!conversationItem.isAnswerLoading">
+        <img src="~/assets/svg/gemini.svg" alt="gemini" />
+      </div>
+      <div class="gemini-text" v-show="!conversationItem.isAnswerLoading" v-html="conversationItem.answer"></div>
+    </div>
     <div v-show="conversationItem.isAnswerLoading" class="flex items-center space-x-4">
       <USkeleton class="h-12 w-12" :ui="{ rounded: 'rounded-full' }" />
       <div class="space-y-2">
@@ -48,7 +52,7 @@ const RegenerateAnswer = async (resetItem) => {
   .conversation-item {
     margin: 20px;
     word-wrap: break-word;
-    .question-details{
+    .question-details {
       display: flex;
       align-items: center;
       .question-author {
@@ -57,6 +61,15 @@ const RegenerateAnswer = async (resetItem) => {
     }
     .restart {
       text-align: center;
+    }
+    .gemini{
+      display: flex;
+      .gemini-pic{
+        width: 50px;
+      }
+      .gemini-text{
+        margin-left: 20px;
+      }
     }
   }
 }

@@ -42,8 +42,12 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     });
   }
   async function regenerateConversation(question: string, index: number) {
+    conversationList[index].isAnswerLoading = true;
+    conversationList[index].answer = '';
     const conversation = await getConversation(question);
-    conversationList[index] = conversation;
+    conversationList[index].answer = conversation.answer;
+    conversationList[index].isAnswerLoading = false;
+    conversationList[index].code = conversation.code;
   }
   function clearnConversation() {
     conversationList.splice(0, conversationList.length);

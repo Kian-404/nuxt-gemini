@@ -15,7 +15,7 @@
       <div class="gemini-pic" v-show="!conversationItem.isAnswerLoading">
         <img src="~/assets/svg/gemini.svg" alt="gemini" />
       </div>
-      <div class="gemini-text" v-show="!conversationItem.isAnswerLoading" v-html="conversationItem.answer"></div>
+      <div class="gemini-text" v-show="!conversationItem.isAnswerLoading" v-html="answer"></div>
     </div>
     <div v-show="conversationItem.isAnswerLoading" class="flex items-center space-x-4">
       <USkeleton class="h-12 w-12" :ui="{ rounded: 'rounded-full' }" />
@@ -30,13 +30,34 @@
   </UCard>
   <conversation-empty v-if="conversationList.length === 0"></conversation-empty>
 </template>
-<script setup>
+<script setup lang="ts">
 const props = defineProps(["item", "index"]);
 const conversation = useConversationStore();
 const { conversationList } = storeToRefs(conversation);
 const btnLoading = ref(false);
 const conversationItem = reactive(props.item);
-const RegenerateAnswer = async (resetItem) => {
+const answer = ref('');
+let textIndex = 0;
+let timer: any = null;
+const TextSpeed = 10;
+
+watch(
+  () => conversationItem.isAnswerLoading,
+  () => {
+    textIndex = 0;
+    timer = setTimeout(writeText, 300 / TextSpeed);
+  }
+);
+const writeText = () => {
+  answer.value = conversationItem.answer.slice(0, textIndex);
+  textIndex++;
+  if (textIndex >= conversationItem.answer.length) {
+    clearTimeout(timer);
+  }
+  timer = setTimeout(writeText, 300 / TextSpeed);
+  // console.log(answer);
+};
+const RegenerateAnswer = async (resetItem: { question: string }) => {
   console.log(resetItem);
   console.log(props.index);
   btnLoading.value = true;
@@ -62,12 +83,12 @@ const RegenerateAnswer = async (resetItem) => {
     .restart {
       text-align: center;
     }
-    .gemini{
+    .gemini {
       display: flex;
-      .gemini-pic{
+      .gemini-pic {
         width: 50px;
       }
-      .gemini-text{
+      .gemini-text {
         margin-left: 20px;
       }
     }

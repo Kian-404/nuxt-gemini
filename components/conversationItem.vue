@@ -13,7 +13,8 @@
     <div>{{ conversation.code }}</div>
     <div class="gemini">
       <div class="gemini-pic" v-show="!conversationItem.isAnswerLoading">
-        <img src="~/assets/svg/gemini.svg" alt="gemini" />
+        <img class="gemini-img" :class="isActive ? 'active':'paused'" 
+        src="~/assets/svg/gemini.svg" alt="gemini" />
       </div>
       <div class="gemini-text" v-show="!conversationItem.isAnswerLoading" v-html="answer"></div>
     </div>
@@ -36,8 +37,9 @@ const conversation = useConversationStore();
 const { conversationList } = storeToRefs(conversation);
 const btnLoading = ref(false);
 const conversationItem = reactive(props.item);
-const answer = ref('');
+const answer = ref("");
 let textIndex = 0;
+const isActive = ref(false);
 let timer: any = null;
 const TextSpeed = 10;
 
@@ -45,6 +47,7 @@ watch(
   () => conversationItem.isAnswerLoading,
   () => {
     textIndex = 0;
+    isActive.value = true;
     timer = setTimeout(writeText, 300 / TextSpeed);
   }
 );
@@ -53,6 +56,7 @@ const writeText = () => {
   textIndex++;
   if (textIndex >= conversationItem.answer.length) {
     clearTimeout(timer);
+    isActive.value = false;
   }
   timer = setTimeout(writeText, 300 / TextSpeed);
   // console.log(answer);
@@ -87,11 +91,44 @@ const RegenerateAnswer = async (resetItem: { question: string }) => {
       display: flex;
       .gemini-pic {
         width: 50px;
+        .gemini-img {
+          animation-name: scaleAnimation; // 动画名
+          animation-duration: 2s; // 动画时长
+          animation-iteration-count: infinite; // 永久动画
+          transition-timing-function: ease-in-out; // 动画过渡
+          &.active {
+            animation-play-state: running;
+          }
+          &.paused {
+            animation-iteration-count: 0;
+            // animation-play-state: paused;
+          }
+        }
       }
       .gemini-text {
         margin-left: 20px;
       }
     }
+  }
+}
+@keyframes scaleAnimation {
+  // 动画设置
+  0% {
+    transform: scale(1);
+  }
+
+  25% {
+    transform: scale(0.5);
+  }
+
+  50% {
+    transform: scale(1);
+  }
+  75% {
+    transform: scale(0.5);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>

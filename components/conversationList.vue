@@ -3,7 +3,7 @@
     <div v-for="(item, index) in conversationList">
       <ConversationItem :key="item.id" :item="item" :index="index"></ConversationItem>
     </div>
-    <conversation-empty v-if="conversationList.length === 0"></conversation-empty>
+    <conversation-empty v-show="conversationList.length === 0"></conversation-empty>
   </div>
 </template>
 <script setup>

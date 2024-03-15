@@ -8,9 +8,11 @@
         <div class="question-text">
           {{ conversationItem.question }}
         </div>
+        <div class="answer-speak">
+          <itemSpeak :speakContent="conversationItem.originText" :index="props.index"/>
+        </div>
       </div>
     </template>
-    <div>{{ conversation.code }}</div>
     <div class="gemini">
       <div class="gemini-pic" v-show="!conversationItem.isAnswerLoading">
         <img class="gemini-img" :class="isActive ? 'active':'paused'" 
@@ -32,6 +34,7 @@
   <conversation-empty v-if="conversationList.length === 0"></conversation-empty>
 </template>
 <script setup lang="ts">
+import itemSpeak from './itemSpeak.vue';
 const props = defineProps(["item", "index"]);
 const conversation = useConversationStore();
 const { conversationList } = storeToRefs(conversation);
@@ -82,6 +85,9 @@ const RegenerateAnswer = async (resetItem: { question: string }) => {
       align-items: center;
       .question-author {
         margin-right: 20px;
+      }
+      .question-text {
+        flex: 1;
       }
     }
     .restart {

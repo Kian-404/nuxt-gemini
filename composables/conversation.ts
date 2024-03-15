@@ -4,6 +4,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 interface conversationItem {
   id: number;
   question: string;
+  originText: string,
   answer: string | Promise<string>;
   time: Date;
   isAnswerLoading?: boolean;
@@ -21,12 +22,14 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       id: Math.random(),
       time: new Date(),
       question: question,
+      originText:'',
       answer: "",
       isAnswerLoading: true,
     });
     conversationList.push(conversationItem);
 
     const conversation = await getConversation(question);
+    conversationItem.originText = conversation.originText;
     conversationItem.answer = conversation.answer;
     conversationItem.isAnswerLoading = false;
     conversationItem.code = conversation.code;
@@ -46,6 +49,7 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     conversationList[index].answer = '';
     const conversation = await getConversation(question);
     conversationList[index].answer = conversation.answer;
+    conversationList[index].originText = conversation.originText;
     conversationList[index].isAnswerLoading = false;
     conversationList[index].code = conversation.code;
   }
@@ -64,7 +68,7 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       text = response.text();
       console.log(text);
     } catch (error: any) {
-      text = "resopese error: " + error.message;
+      text = "resopese error: " + error;
       console.info(error);
       code = 500;
     }
@@ -74,6 +78,7 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       id: Math.random(),
       time: new Date(),
       question: question,
+      originText: text,
       answer: marked(text),
       code,
     };

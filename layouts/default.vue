@@ -7,12 +7,14 @@
         <slot />
       </div>
     </div>
+    <setSlideover/>
   </UContainer>
 </template>
 
 <script setup>
 import Header from "./header.vue";
 import Sidebar from "./sidebar.vue";
+import setSlideover from "~/components/setSlideover.vue";
 </script>
 
 <style lang="less" scoped>

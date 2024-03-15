@@ -1,12 +1,17 @@
 <template>
   <div class="set-slideover">
-    <USlideover v-model="showSlideOver">
+    <USlideover v-model="showSlideOver" >
       <UCard
         class="flex flex-col flex-1"
         :ui="{ body: { base: 'flex-1' }, ring: '', divide: 'divide-y divide-gray-100 dark:divide-gray-800' }"
       >
         <template #header>
-          setting header
+          <div class="flex">
+            <p class="flex-1">setting header</p>
+            <UButton color="gray" variant="ghost" icon="i-heroicons-x-mark-20-solid" class="-my-1" @click="setSlideover.toggleSlide" />
+          </div>
+          
+           
         </template>
         <div class="flex">
           <p class="flex-1">reset conversation</p>

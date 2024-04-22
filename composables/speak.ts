@@ -30,6 +30,10 @@ export const useSpeakStore = defineStore("useSpeakStore", () => {
     };
     
   };
+  const stopSpeak = () => {
+    isSpeaking.value = false;
+    window.speechSynthesis.cancel();
+  }
   const setCurrentIndex = (index: number) => {
     speakCurrentIndex.value = index;
   };
@@ -38,5 +42,6 @@ export const useSpeakStore = defineStore("useSpeakStore", () => {
     speakCurrentIndex,
     setCurrentIndex,
     startRead,
+    stopSpeak,
   };
 });

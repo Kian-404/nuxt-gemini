@@ -18,7 +18,10 @@ const UtteranceProps = {
 };
 
 const startRead = () => {
-  console.log(props.index);
+  if(isSpeaking.value && props.index === speakCurrentIndex.value) {
+    speakStatus.stopSpeak();
+    return;
+  }
   speakStatus.setCurrentIndex(props.index);
   speakStatus.startRead(props.speakContent);
 };

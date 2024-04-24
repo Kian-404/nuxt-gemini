@@ -1,13 +1,16 @@
 <template>
   <div class="question-bar">
-    <UInput
+    <UTextarea
       :loading="isLoading"
       :disabled="isLoading"
+      autoresize
+      autofocus
+      :rows="2"
+      :maxrows="5"
       icon="i-heroicons-magnifying-glass-20-solid"
       placeholder="Input your question..."
       v-model="question"
       @keyup.enter="submit"
-      style="height: 48px;"
     />
   </div>
 </template>

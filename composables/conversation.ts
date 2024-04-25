@@ -63,9 +63,15 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     let text = "response answer...";
     let code = 200;
     try {
-      const result = await model.generateContent(question);
-      const response = await result.response;
-      text = response.text();
+      const result = await model.generateContentStream(question);
+      // const response = await result.response;
+      text = '';
+      for await (const chunk of result.stream) {
+        const chunkText = chunk.text();
+        console.log(chunkText);
+        text += chunkText;
+      }
+      // text = response.text();
       console.log(text);
     } catch (error: any) {
       text = "resopese error: " + error;

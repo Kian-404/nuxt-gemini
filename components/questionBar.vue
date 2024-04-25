@@ -34,6 +34,6 @@ const submit = async () => {
 <style less scoped>
 .question-bar{
   width: 96%;
-  margin: 0 auto;
+  margin: 0 20px;
 }
 </style>

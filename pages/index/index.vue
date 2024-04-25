@@ -28,11 +28,10 @@ import ConversationList from "../../components/conversationList.vue";
     overflow: scroll;
   }
   .input-area{
-    height: 10%;
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 10px;
+    padding: 8px 0;
   }
 }
 </style>

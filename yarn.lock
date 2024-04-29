@@ -609,10 +609,10 @@
   resolved "https://r.cnpmjs.org/@fastify/busboy/-/busboy-2.1.1.tgz#b9da6a878a371829a0502c9b6c1c143ef6663f4d"
   integrity sha512-vBZP4NlzfOlerQTnba4aqZoMhE/a9HY7HRqoOPaETQcSQuWEIyZMHGfVu6w9wGtGK5fED5qRs2DteVCjOH60sA==
 
-"@google/generative-ai@0.3.0":
-  version "0.3.0"
-  resolved "https://r.cnpmjs.org/@google/generative-ai/-/generative-ai-0.3.0.tgz#8b62dd87dfb337113700c5d55967620c76494903"
-  integrity sha512-6xbaA/JPpwCoe+lfxE2RavVB8JI8F3P6mCse1Sbm586HhJkyuSevK7Opt4l2dbQZFej+M8ALhMMpfBiRW05Fag==
+"@google/generative-ai@0.8.0":
+  version "0.8.0"
+  resolved "https://r.cnpmjs.org/@google/generative-ai/-/generative-ai-0.8.0.tgz#a8a61207ffbbf80695e880c7e6de3c4cc05e5d1b"
+  integrity sha512-O55FgK1Jvl2JuJP1cnRHEAM8A4Lr3yKtjQrCn2QXOXVT+L5+o/nFQcx0/oIo3oq1Kq9TjjgewXyb9BBrK+Wd0A==
 
 "@headlessui/tailwindcss@^0.2.0":
   version "0.2.0"

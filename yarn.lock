@@ -626,6 +626,13 @@
   dependencies:
     "@tanstack/vue-virtual" "^3.0.0-beta.60"
 
+"@iconify-json/grommet-icons@^1.1.10":
+  version "1.1.10"
+  resolved "https://r.cnpmjs.org/@iconify-json/grommet-icons/-/grommet-icons-1.1.10.tgz#626820800c350e830fbd014b80c4cd6b8be0e007"
+  integrity sha512-0BZ7E0qAhrAUjduWYci/ys29vVtp5o6uNZK+7Df4bf02nO8xGi0xawn3VbqnxIq8T4fEcOMt043Zlo1mH7dnqg==
+  dependencies:
+    "@iconify/types" "*"
+
 "@iconify-json/heroicons@^1.1.20":
   version "1.1.20"
   resolved "https://r.cnpmjs.org/@iconify-json/heroicons/-/heroicons-1.1.20.tgz#e2c536224bd0ff922e824579cdab40a18b0477da"

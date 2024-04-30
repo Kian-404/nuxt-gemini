@@ -57,11 +57,8 @@ const goToGithub = () => {
     }
   }
   .sidebar-footer {
-    display: flex;
-    justify-content: center;
-    align-self: center;
     .icon-item {
-      height: 48px;
+      vertical-align: middle;
     }
   }
   .icon-item {

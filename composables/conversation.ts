@@ -15,6 +15,7 @@ interface chatListType {
   chatHistory: historyType[];
   responseHistory: historyType[];
   chatItem: conversationItem[];
+  title?: string;
 }
 interface historyType {
   text: string;
@@ -23,7 +24,7 @@ export const useConversationStore = defineStore("ConversationStore", () => {
   const runtimeConfig = useRuntimeConfig();
   const API_KEY = runtimeConfig.public.apiKey;
   const genAI = new GoogleGenerativeAI(API_KEY);
-  const conversationList: conversationItem[] = reactive([]);
+  let conversationList = ref<conversationItem[]>([]);
   let chatIndex = Math.random() * 1000000000000000000;
   const chatList: chatListType[] = reactive([
     {
@@ -33,8 +34,8 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       chatItem: [],
     },
   ]);
-  const chatHistory: historyType[] = reactive([{ text: "Hello" }]);
-  const responseHistory: historyType[] = reactive([{ text: "Great to meet you" }]);
+  let chatHistory: historyType[] = reactive([{ text: "Hello" }]);
+  let responseHistory: historyType[] = reactive([{ text: "Great to meet you" }]);
   async function addConversation(question: string) {
     const conversationItem: conversationItem = reactive({
       id: Math.random(),
@@ -44,7 +45,7 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       answer: "",
       isAnswerLoading: true,
     });
-    conversationList.push(conversationItem);
+    conversationList.value.push(conversationItem);
 
     // const conversation = await getConversation(question);
     const conversation = await MultipleConversation(question);
@@ -53,7 +54,17 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     conversationItem.isAnswerLoading = false;
     conversationItem.code = conversation.code;
     console.log(conversationList);
-    chatList[chatList.length - 1].chatItem = conversationList;
+    chatList.forEach((item) => {
+      if (item.id === chatIndex) {
+        item.title = item.title === undefined || item.title?.length === 0 ? question : item.title;
+        item.chatItem = deepClone(conversationList.value);
+        console.log(item);
+        // chatHistory = item.chatHistory;
+        // responseHistory = item.responseHistory;
+        // conversationList.value = item.chatItem || [];
+      }
+    });
+    // chatList[chatList.length - 1].chatItem = deepClone(conversationList.value);
     console.log(chatList);
 
     nextTick(() => {
@@ -67,19 +78,19 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     });
   }
   async function regenerateConversation(question: string, index: number) {
-    conversationList[index].isAnswerLoading = true;
-    conversationList[index].answer = "";
+    conversationList.value[index].isAnswerLoading = true;
+    conversationList.value[index].answer = "";
     // const conversation = await getConversation(question);
     const conversation = await MultipleConversation(question);
-    conversationList[index].answer = conversation.answer;
-    conversationList[index].originText = conversation.originText;
-    conversationList[index].isAnswerLoading = false;
-    conversationList[index].code = conversation.code;
-    chatList[chatList.length - 1].chatItem = conversationList;
+    conversationList.value[index].answer = conversation.answer;
+    conversationList.value[index].originText = conversation.originText;
+    conversationList.value[index].isAnswerLoading = false;
+    conversationList.value[index].code = conversation.code;
+    chatList[chatList.length - 1].chatItem = deepClone(conversationList.value);
   }
   function clearnConversation() {
     chatList;
-    conversationList.splice(0, conversationList.length);
+    conversationList.value.splice(0, conversationList.value.length);
   }
   async function getConversation(question: string) {
     // For text-only input, use the gemini-pro model
@@ -168,6 +179,62 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     console.log(conversation);
     return conversation;
   }
+  function createChat() {
+    if(chatList[chatList.length - 1].chatItem.length  === 0) {
+      return;
+    }
+    chatIndex = Math.random() * 1000000000000000000;
+    chatHistory = [{ text: "Hello" }];
+    responseHistory = [{ text: "Great to meet you" }];
+    chatList.push({
+      id: chatIndex,
+      chatHistory,
+      responseHistory,
+      chatItem: [],
+      title: ``,
+    });
+    conversationList.value = [];
+    console.log(conversationList);
+  }
+  function changeChat(currentChatIndex: number) {
+    console.log(currentChatIndex);
+    conversationList.value = [];
+    chatIndex = currentChatIndex;
+    chatList.forEach((item) => {
+      if (item.id === chatIndex) {
+        console.log(item);
+        chatHistory = item.chatHistory;
+        responseHistory = item.responseHistory;
+        conversationList.value = item.chatItem || [];
+      }
+    });
+    console.log(conversationList);
+  }
+  function deepClone(obj: any): any {
+    if (obj === null) return null;
+    if (typeof obj !== "object") return obj;
+
+    let copy: any = Array.isArray(obj) ? [] : {};
+
+    for (let key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        copy[key] = deepClone(obj[key]);
+      }
+    }
+
+    return copy;
+  }
+
+
   // ...其他操作和状态
-  return { conversationList, addConversation, regenerateConversation, getConversation, clearnConversation };
+  return {
+    chatList,
+    conversationList,
+    addConversation,
+    regenerateConversation,
+    getConversation,
+    clearnConversation,
+    createChat,
+    changeChat,
+  };
 });

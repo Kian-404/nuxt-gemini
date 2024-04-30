@@ -48,12 +48,19 @@ const TextSpeed = 10;
 
 watch(
   () => conversationItem.isAnswerLoading,
-  () => {
+  (value) => {
+    console.log(value)
     textIndex = 0;
     isActive.value = true;
     timer = setTimeout(writeText, 300 / TextSpeed);
   }
 );
+watchEffect(() =>{
+  console.log(props.item);
+  if(props.item.isAnswerLoading === false && isActive.value === false ){
+    answer.value = props.item.answer;
+  }
+})
 const writeText = () => {
   answer.value = conversationItem.answer.slice(0, textIndex);
   textIndex++;
@@ -107,6 +114,7 @@ const RegenerateAnswer = async (resetItem: { question: string }) => {
           }
           &.paused {
             animation-iteration-count: 0;
+            transform: scale(1);
             // animation-play-state: paused;
           }
         }

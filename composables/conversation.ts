@@ -88,14 +88,14 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     chatList[chatIndex.value].chatItem =[...conversationList.value];
   }
   function clearnConversation() {
-    chatList = reactive([
-      {
-        id: chatIndex,
-        chatHistory: [],
-        responseHistory: [],
-        chatItem: [],
-      },
-    ]);
+    chatList.length = 0;
+    chatList.push(
+    {
+      id: chatIndex.value,
+      chatHistory: [],
+      responseHistory: [],
+      chatItem: [],
+    });
     conversationList.value.splice(0, conversationList.value.length);
   }
   async function getConversation(question: string) {

@@ -11,4 +11,8 @@ export default defineNuxtConfig({
     icons: ['grommet-icons']
   },
   modules: ["@nuxt/ui", "@pinia/nuxt", "@nuxt/content", "@nuxtjs/color-mode"],
+  plugins: [
+
+    { src: '~/plugins/disableLogs' },
+  ]
 });

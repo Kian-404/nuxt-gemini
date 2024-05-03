@@ -3,7 +3,7 @@
     <template #header>
       <div class="question-details">
         <div class="question-author">
-          <UAvatar src="https://avatars.githubusercontent.com/u/739984?v=4" alt="Avatar" />
+          <UAvatar icon="i-heroicons-user-solid" alt="Avatar" />
         </div>
         <div class="question-text">
           {{ conversationItem.question }}

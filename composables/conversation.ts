@@ -85,12 +85,11 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     conversationList.value[index].originText = conversation.originText;
     conversationList.value[index].isAnswerLoading = false;
     conversationList.value[index].code = conversation.code;
-    chatList[chatIndex.value].chatItem =[...conversationList.value];
+    chatList[chatIndex.value].chatItem = [...conversationList.value];
   }
   function clearnConversation() {
     chatList.length = 0;
-    chatList.push(
-    {
+    chatList.push({
       id: chatIndex.value,
       chatHistory: [],
       responseHistory: [],
@@ -182,12 +181,11 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     return conversation;
   }
   function createChat() {
-    if(chatList[chatList.length - 1].chatItem.length  === 0) {
+    if (chatList[chatList.length - 1].chatItem.length === 0) {
       return;
     }
     chatIndex.value = Math.random() * 1000000000000000000;
-    chatHistory = [{ text: "Hello" }];
-    responseHistory = [{ text: "Great to meet you" }];
+   
     chatList.push({
       id: chatIndex.value,
       chatHistory,
@@ -207,10 +205,28 @@ export const useConversationStore = defineStore("ConversationStore", () => {
         console.log(item);
         chatHistory = item.chatHistory;
         responseHistory = item.responseHistory;
-        conversationList.value =  [...item.chatItem];
+        conversationList.value = [...item.chatItem];
       }
     });
     console.log(conversationList);
+  }
+  function deleteChat(currentChatIndex: number) {
+    chatList.forEach((item, index) => {
+      if (item.id === currentChatIndex) {
+        chatList.splice(index, 1);
+      }
+    });
+    if (chatList.length === 0) {
+       chatHistory = [{ text: "Hello" }];
+       responseHistory = [{ text: "Great to meet you" }];
+      chatList.push({
+        id: chatIndex.value,
+        chatHistory,
+        responseHistory,
+        chatItem: [],
+      });
+    }
+    createChat();
   }
   function deepClone(obj: any): any {
     if (obj === null) return null;
@@ -227,7 +243,6 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     return copy;
   }
 
-
   // ...其他操作和状态
   return {
     chatList,
@@ -239,5 +254,6 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     clearnConversation,
     createChat,
     changeChat,
+    deleteChat,
   };
 });

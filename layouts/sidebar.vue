@@ -5,13 +5,18 @@
     <div class="sidebar-header h-12 leading-10">
       <span>new chat</span>
       <UTooltip text="create new chat" :popper="{ placement: 'right', arrow: true }">
-      <UIcon class="icon-item" 
-      name="i-heroicons-pencil-square-solid"  @click="conversation.createChat()"/>
+        <UIcon class="icon-item" name="i-heroicons-pencil-square-solid" @click="conversation.createChat()" />
       </UTooltip>
-      
     </div>
     <div class="sidebar-content">
-      <p class="chat-item" v-for="item in chatList" @click="conversation.changeChat(item.id)">{{item.title}}</p>
+      <div class="chat-content" v-for="item in chatList">
+        <div v-show="item.id && item.title" class="chat-item" @click="conversation.changeChat(item.id)">
+          <span> {{ item.title }}</span>
+          <UDropdown :items="optionItems" :popper="{ arrow: true }" @click="currentItem(item.id)">
+            <UButton variant="link" color="white" icon="i-heroicons-ellipsis-horizontal-20-solid" />
+          </UDropdown>
+        </div>
+      </div>
     </div>
     <div class="sidebar-footer h-12 leading-10">
       <UIcon class="icon-item" name="i-grommet-icons-github" @click="goToGithub" />
@@ -21,9 +26,31 @@
 
 <script setup>
 const conversation = useConversationStore();
-const {chatList } = storeToRefs(conversation);
+const { chatList } = storeToRefs(conversation);
 const github_url = "https://github.com/Kian-404/nuxt-gemini";
-
+const optionItems = [
+  [
+    {
+      icon: "i-heroicons-pencil-solid",
+      label: "Rename",
+      click: (item) => {
+        console.log("Rename");
+      },
+    },
+    {
+      icon: "i-heroicons-trash-solid",
+      label: "Delete",
+      click: () => {
+        conversation.deleteChat(currentItemIndex.value);
+      },
+    },
+  ],
+];
+const currentItemIndex = ref("");
+const currentItem = (itemIndex) => {
+  currentItemIndex.value = itemIndex;
+  console.log("currentItem");
+};
 const goToGithub = () => {
   window.open(github_url, "_blank");
 };
@@ -47,9 +74,12 @@ const goToGithub = () => {
   .sidebar-content {
     flex: 1;
     overflow: scroll;
-    .chat-item{
+    .chat-item {
       cursor: pointer;
       padding: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
       &:hover {
         background-color: #f0f0f0;
         color: #000;

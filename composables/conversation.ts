@@ -1,6 +1,6 @@
 import { marked } from "marked";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-
+import persistedState from "@pinia-plugin-persistedstate/nuxt";
 interface conversationItem {
   id: number;
   question: string;
@@ -63,7 +63,6 @@ export const useConversationStore = defineStore("ConversationStore", () => {
         console.log(item);
       }
     });
-    // chatList[chatList.length - 1].chatItem = deepClone(conversationList.value);
     console.log(chatList);
 
     nextTick(() => {
@@ -85,7 +84,15 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     conversationList.value[index].originText = conversation.originText;
     conversationList.value[index].isAnswerLoading = false;
     conversationList.value[index].code = conversation.code;
-    chatList[chatIndex.value].chatItem = [...conversationList.value];
+     chatList.forEach((item) => {
+       if (item.id === chatIndex.value) {
+         console.log(item);
+        //  chatHistory = item.chatHistory;
+        //  responseHistory = item.responseHistory;
+         conversationList.value = [...item.chatItem];
+       }
+     });
+    // chatList[chatIndex.value].chatItem = [...conversationList.value];
   }
   function clearnConversation() {
     chatList.length = 0;
@@ -185,7 +192,7 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       return;
     }
     chatIndex.value = Math.random() * 1000000000000000000;
-   
+
     chatList.push({
       id: chatIndex.value,
       chatHistory,
@@ -217,8 +224,8 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       }
     });
     if (chatList.length === 0) {
-       chatHistory = [{ text: "Hello" }];
-       responseHistory = [{ text: "Great to meet you" }];
+      chatHistory = [{ text: "Hello" }];
+      responseHistory = [{ text: "Great to meet you" }];
       chatList.push({
         id: chatIndex.value,
         chatHistory,
@@ -227,20 +234,6 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       });
     }
     createChat();
-  }
-  function deepClone(obj: any): any {
-    if (obj === null) return null;
-    if (typeof obj !== "object") return obj;
-
-    let copy: any = Array.isArray(obj) ? [] : {};
-
-    for (let key in obj) {
-      if (obj.hasOwnProperty(key)) {
-        copy[key] = deepClone(obj[key]);
-      }
-    }
-
-    return copy;
   }
 
   // ...其他操作和状态

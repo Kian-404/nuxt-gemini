@@ -9,24 +9,24 @@
           {{ conversationItem.question }}
         </div>
         <div class="answer-speak">
-          <itemSpeak :speakContent="conversationItem.originText" :index="props.index"/>
+          <itemSpeak :speakContent="conversationItem.originText" :index="props.index" />
         </div>
       </div>
     </template>
     <div class="gemini">
-      <div class="gemini-pic" v-show="!conversationItem.isAnswerLoading">
-        <img class="gemini-img" :class="isActive ? 'active':'paused'" 
-        src="~/assets/svg/gemini.svg" alt="gemini" />
+      <div class="gemini-pic">
+        <img class="gemini-img" :class="isActive ? 'active' : 'paused'" src="~/assets/svg/gemini.svg" alt="gemini" />
       </div>
-      <div class="gemini-text" v-show="!conversationItem.isAnswerLoading" v-html="answer"></div>
-    </div>
-    <div v-show="conversationItem.isAnswerLoading" class="flex items-center space-x-4">
-      <USkeleton class="h-12 w-12" :ui="{ rounded: 'rounded-full' }" />
-      <div class="space-y-2">
-        <USkeleton class="h-4 w-[250px]" />
-        <USkeleton class="h-4 w-[200px]" />
+      <div class="gemini-text" v-if="!conversationItem.isAnswerLoading" v-html="answer"></div>
+      <div  v-if="conversationItem.isAnswerLoading" class="flex items-center flex-1">
+        <div class="space-y-5 flex-1">
+          <UProgress animation="carousel" />
+          <UProgress animation="swing" color="lime" />
+          <UProgress animation="elastic" color="blue" />
+        </div>
       </div>
     </div>
+
     <div class="restart my-4" v-if="conversationItem.code === 500">
       <UButton @click="RegenerateAnswer(item)" :loading="btnLoading">Regenerate</UButton>
     </div>
@@ -34,7 +34,7 @@
   <conversation-empty v-if="conversationList.length === 0"></conversation-empty>
 </template>
 <script setup lang="ts">
-import itemSpeak from './itemSpeak.vue';
+import itemSpeak from "./itemSpeak.vue";
 const props = defineProps(["item", "index"]);
 const conversation = useConversationStore();
 const { conversationList } = storeToRefs(conversation);
@@ -42,25 +42,25 @@ const btnLoading = ref(false);
 const conversationItem = reactive(props.item);
 const answer = ref("");
 let textIndex = 0;
-const isActive = ref(false);
+const isActive = ref(true);
 let timer: any = null;
 const TextSpeed = 10;
 
 watch(
   () => conversationItem.isAnswerLoading,
   (value) => {
-    console.log(value)
+    console.log(value);
     textIndex = 0;
     isActive.value = true;
     timer = setTimeout(writeText, 300 / TextSpeed);
   }
 );
-watchEffect(() =>{
+watchEffect(() => {
   console.log(props.item);
-  if(props.item.isAnswerLoading === false && isActive.value === false ){
+  if (props.item.isAnswerLoading === false && isActive.value === false) {
     answer.value = props.item.answer;
   }
-})
+});
 const writeText = () => {
   answer.value = conversationItem.answer.slice(0, textIndex);
   textIndex++;
@@ -114,13 +114,15 @@ const RegenerateAnswer = async (resetItem: { question: string }) => {
           }
           &.paused {
             animation-iteration-count: 0;
-            transform: scale(1);
+            transform: scale(1) rotate(0deg);
+            // animation-play-state: paused
             // animation-play-state: paused;
           }
         }
       }
       .gemini-text {
         margin-left: 20px;
+        flex: 1;
       }
     }
   }
@@ -128,21 +130,21 @@ const RegenerateAnswer = async (resetItem: { question: string }) => {
 @keyframes scaleAnimation {
   // 动画设置
   0% {
-    transform: scale(1);
+    transform: scale(1) rotate(45deg);
   }
 
   25% {
-    transform: scale(0.5);
+    transform: scale(0.5) rotate(90deg);
   }
 
   50% {
-    transform: scale(1);
+    transform: scale(1) rotate(180deg);
   }
   75% {
-    transform: scale(0.5);
+    transform: scale(0.5) rotate(270deg);
   }
   100% {
-    transform: scale(1);
+    transform: scale(1) rotate(360deg);
   }
 }
 </style>

@@ -58,9 +58,10 @@ const goToGithub = () => {
 
 <style lang="less" scoped>
 .sidebar {
+  font-family: "Josefin Sans", sans-serif;
   height: calc(100vh - 16px);
   margin-top: 20px;
-  margin: 8px 0;
+  margin: 8px 10px;
   transition: all 1s ease;
   width: 260px;
   display: flex;
@@ -69,7 +70,7 @@ const goToGithub = () => {
   .sidebar-header {
     display: flex;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
   }
   .sidebar-content {
     flex: 1;

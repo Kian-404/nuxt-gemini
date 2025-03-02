@@ -24,7 +24,9 @@
 import Header from "./header.vue";
 import Sidebar from "./sidebar.vue";
 import setSlideover from "~/components/setSlideover.vue";
+import {useSlideBarStore} from "@/composables/slidebar.ts"
 const SlideBar = useSlideBarStore();
+const device = useDevice();
 </script>
 
 <style lang="less" scoped>

@@ -1,6 +1,5 @@
 import { marked } from "marked";
 import { GoogleGenerativeAI } from "@google/generative-ai";
-import persistedState from "@pinia-plugin-persistedstate/nuxt";
 interface conversationItem {
   id: number;
   question: string;
@@ -106,20 +105,20 @@ export const useConversationStore = defineStore("ConversationStore", () => {
   }
   async function getConversation(question: string) {
     // For text-only input, use the gemini-pro model
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     let text = "response answer...";
     let code = 200;
     try {
-      const result = await model.generateContentStream(question);
+      const result: any = await model.generateContent(question);
       // const response = await result.response;
       text = "";
-      for await (const chunk of result.stream) {
-        const chunkText = chunk.text();
-        console.log(chunkText);
-        text += chunkText;
-      }
-      // text = response.text();
+      // for await (const chunk of result.stream) {
+      //   const chunkText = chunk.text();
+      //   console.log(chunkText);
+      //   text += chunkText;
+      // }
+      text = result.text();
       console.log(text);
     } catch (error: any) {
       text = "resopese error: " + error;
@@ -140,7 +139,7 @@ export const useConversationStore = defineStore("ConversationStore", () => {
     return conversation;
   }
   async function MultipleConversation(question: string) {
-    const model = genAI.getGenerativeModel({ model: "gemini-pro" });
+    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     let code = 200;
     let text = "response answer...";
     const chat = model.startChat({
@@ -224,8 +223,8 @@ export const useConversationStore = defineStore("ConversationStore", () => {
       }
     });
     if (chatList.length === 0) {
-      chatHistory = [{ text: "Hello" }];
-      responseHistory = [{ text: "Great to meet you" }];
+      chatHistory = [{ text: "你好" }];
+      responseHistory = [{ text: "我是一个AI助手" }];
       chatList.push({
         id: chatIndex.value,
         chatHistory,
